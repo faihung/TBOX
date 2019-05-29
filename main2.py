@@ -61,7 +61,7 @@ if __name__ == '__main__':
     t_server = threading.Thread(target=recorder_server, name='Record-Thread', args=())
     t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
 
-    # t_server.start()
+    t_server.start()
     t_client.start()
 
 
