@@ -5,6 +5,12 @@ import socket
 import threading
 import binascii
 
+
+
+
+
+
+
 def recorder_server():
     ip_port = ('192.168.0.200', 7)
     # ip_port = ('127.0.0.1', 6666)
@@ -26,7 +32,8 @@ def recorder_server():
         # print("server_reply4: %s" % server_reply4)
 
         for i in range(len(server_reply4)):
-            with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
+            # with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
+            with open('/mnt/hgfs/work/work_data_collect_record/TBOX/data/test.txt', 'a') as f:
                 if i == 0:
                     f.write('can0:')
                     f.write(' ')
