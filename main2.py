@@ -56,28 +56,22 @@ def recorder_server():
                 # print("debug-2:%s" % formatted_date)
                 f.write("Begin Triggerblock %s\n" % formatted_date)
                 header_written = True
-                f.write("0.0000 Start of measurement")  # caution: this is a recursive call!
-
+                f.write("0.0000 Start of measurement\n")  # caution: this is a recursive call!
 
             # figure out the correct timestamp
-            if timestamp is None:# or timestamp < last_timestamp:
+            if timestamp is None:
                 timestamp = last_timestamp
-                # print("%0.4f"% timestamp)
                 timestamp = time.time()
-                # print("debug-2:%s" % timestamp)
                 started = timestamp
-                # print("debug-22:%s" % started)
             else:
                 timestamp = time.time()
-                # print("debug-cur:%s" % timestamp)
-                # print("debug-xxx:%s" % started)
                 timestamp -= started
-                print("debug:%0.4f" % timestamp)
+                f.write("%0.4f\n" % timestamp)
+
 
             # turn into relative timestamps if necessary
             if timestamp >= started:
                 started = timestamp
-                # print("debug-pre:%s" % started)
 
 
 

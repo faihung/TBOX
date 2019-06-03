@@ -1,45 +1,12 @@
-date Mon Jun 06 03:51:50 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 03:53:44 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 03:54:54 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 03:56:04 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 03:57:33 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:01:50 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:02:55 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:04:41 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:05:28 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:09:45 PM 2019
-base hex  timestamps absolute
-internal events logged
-Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
-0.0000 Start of measurementdate Mon Jun 06 04:11:19 PM 2019
+date Mon Jun 06 04:17:06 PM 2019
 base hex  timestamps absolute
 internal events logged
 Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
 0.0000 Start of measurement
+4.8229
+9.1250
+9.8430
+10.0368
+10.2287
+10.4068
+10.5730
