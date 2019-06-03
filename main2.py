@@ -7,23 +7,25 @@ import binascii
 from datetime import datetime
 import time
 
+
 FORMAT_MESSAGE = "{channel}  {id:<15} Rx   {dtype} {data}"
 FORMAT_DATE = "%a %b %m %I:%M:%S %p %Y"
 FORMAT_EVENT = "{timestamp: 9.4f} {message}\n"
-timestamp=None
-last_timestamp = (timestamp or 0.0)
-formatted_date = time.strftime(FORMAT_DATE, time.localtime(last_timestamp))
-now = datetime.now().strftime("%a %b %m %I:%M:%S %p %Y")
-
 
 
 
 def recorder_server():
-    recorder_flag = 0
+    # recorder_flag = 0
     # ip_port = ('192.168.0.200', 7)
     ip_port = ('127.0.0.1', 6666)
     s = socket.socket()  # 创建套接字
     s.connect(ip_port)  # 连接服务器
+
+    # the last part is written with the timestamp of the first message
+    timestamp = None
+    header_written = False
+    last_timestamp = None
+    started = None
 
     while True:
         #ASCII码字符串
@@ -39,25 +41,45 @@ def recorder_server():
         server_reply4 = list(server_reply3)
         # print("server_reply4: %s" % server_reply4)#server_reply4: [0, 48, 49, 50, 51, 52, 53, 54]
         with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
-            if recorder_flag == 0:
+            # this is the case for the very first message:
+            if not header_written:
+                # write start of file header
+                now = datetime.now().strftime("%a %b %m %I:%M:%S %p %Y")
                 f.write("date %s\n" % now)
                 f.write("base hex  timestamps absolute\n")
                 f.write("internal events logged\n")
+
+                last_timestamp = (timestamp or 0.0)
+                started = last_timestamp
+                # print("debug-1:%s" % started)
+                formatted_date = time.strftime(FORMAT_DATE, time.localtime(last_timestamp))
+                # print("debug-2:%s" % formatted_date)
                 f.write("Begin Triggerblock %s\n" % formatted_date)
-                recorder_flag = recorder_flag+1
-            for i in range(len(server_reply4)):
-                if i == 0:
-                    # f.write(str(time.time()))
-                    print("%0.4f" % time.time())
-                    f.write(' ')
-                    f.write('can0:')
-                    f.write(' ')
+                header_written = True
+                f.write("0.0000 Start of measurement")  # caution: this is a recursive call!
 
-                f.write(str(hex(server_reply4[i]))[2:])
-                f.write(' ')
 
-                if i == 7:
-                    f.write('\n')
+            # figure out the correct timestamp
+            if timestamp is None:# or timestamp < last_timestamp:
+                timestamp = last_timestamp
+                # print("%0.4f"% timestamp)
+                timestamp = time.time()
+                # print("debug-2:%s" % timestamp)
+                started = timestamp
+                # print("debug-22:%s" % started)
+            else:
+                timestamp = time.time()
+                # print("debug-cur:%s" % timestamp)
+                # print("debug-xxx:%s" % started)
+                timestamp -= started
+                print("debug:%0.4f" % timestamp)
+
+            # turn into relative timestamps if necessary
+            if timestamp >= started:
+                started = timestamp
+                # print("debug-pre:%s" % started)
+
+
 
     s.close()  # 关闭连接
 
@@ -87,3 +109,4 @@ if __name__ == '__main__':
 
     t_server.start()
     # t_client.start()
+
