@@ -13,11 +13,9 @@ FORMAT_DATE = "%a %b %m %I:%M:%S %p %Y"
 FORMAT_EVENT = "{timestamp: 9.4f} {message}\n"
 
 
-
 def recorder_server():
-    # recorder_flag = 0
-    # ip_port = ('192.168.0.200', 7)
-    ip_port = ('127.0.0.1', 6666)
+    ip_port = ('192.168.0.200', 7)
+    # ip_port = ('127.0.0.1', 6666)
     s = socket.socket()  # 创建套接字
     s.connect(ip_port)  # 连接服务器
 
@@ -51,9 +49,7 @@ def recorder_server():
 
                 last_timestamp = (timestamp or 0.0)
                 started = last_timestamp
-                # print("debug-1:%s" % started)
                 formatted_date = time.strftime(FORMAT_DATE, time.localtime(last_timestamp))
-                # print("debug-2:%s" % formatted_date)
                 f.write("Begin Triggerblock %s\n" % formatted_date)
                 header_written = True
                 f.write("0.0000 Start of measurement\n")  # caution: this is a recursive call!
@@ -66,41 +62,53 @@ def recorder_server():
             else:
                 timestamp = time.time()
                 timestamp -= started
-                f.write("%0.4f\n" % timestamp)
-
+                f.write("%0.4f" % timestamp)
+                f.write(' ')
+                f.write('can0:')
+                f.write(' ')
+                # can id
+                f.write(' ')
+                f.write('Rx')
+                f.write(' ')
+                f.write('d')
+                f.write(' ')
+                f.write('8')
+                f.write(' ')
+                for i in range(len(server_reply4)):
+                    f.write(str(hex(server_reply4[i]))[2:])
+                    f.write(' ')
+                f.write('\n')
 
             # turn into relative timestamps if necessary
             if timestamp >= started:
                 started = timestamp
 
-
-
     s.close()  # 关闭连接
 
-# def config_client():
-#     # ip_port = ('192.168.0.200', 8)
-#     ip_port = ('127.0.0.1', 6666)
-#     s = socket.socket()  # 创建套接字
-#     s.connect(ip_port)  # 连接服务器
-#
-#     while True:  # 通过一个死循环不断接收用户输入，并发送给服务器
-#         inp = input("请输入要发送的信息： ").strip()
-#         if not inp:  # 防止输入空信息，导致异常退出
-#             continue
-#         s.sendall(inp.encode())
-#
-#         if inp == "exit":  # 如果输入的是‘exit’，表示断开连接
-#             print("结束通信！")
-#             break
-#
-#         server_reply = s.recv(1024).decode()
-#         print("server_reply: %s" % server_reply)
-#     s.close()  # 关闭连接
+def config_client():
+    ip_port = ('192.168.0.200', 8)
+    # ip_port = ('127.0.0.1', 6666)
+    s = socket.socket()  # 创建套接字
+    s.connect(ip_port)  # 连接服务器
+
+    while True:  # 通过一个死循环不断接收用户输入，并发送给服务器
+        inp = input("请输入要发送的信息： ").strip()
+        if not inp:  # 防止输入空信息，导致异常退出
+            continue
+        s.sendall(inp.encode())
+
+        if inp == "exit":  # 如果输入的是‘exit’，表示断开连接
+            print("结束通信！")
+            break
+
+        server_reply = s.recv(1024).decode()
+        print("server_reply: %s" % server_reply)
+    s.close()  # 关闭连接
 
 if __name__ == '__main__':
     t_server = threading.Thread(target=recorder_server, name='Record-Thread', args=())
-    # t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
+    t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
 
     t_server.start()
-    # t_client.start()
+    t_client.start()
 
