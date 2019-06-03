@@ -1,0 +1,64 @@
+date Mon Jun 06 11:33:30 AM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+1559532815.2495923 can0: 31 32 33 34 35 36 37 38 
+1559532815.436169 can0: 31 32 33 34 35 36 37 38 
+1559532815.6263072 can0: 31 32 33 34 35 36 37 38 
+1559532815.8278427 can0: 31 32 33 34 35 36 37 38 
+1559532815.9904852 can0: 31 32 33 34 35 36 37 38 
+1559532816.1725721 can0: 31 32 33 34 35 36 37 38 
+1559532816.3584757 can0: 31 32 33 34 35 36 37 38 
+1559532816.7902467 can0: 31 32 33 34 35 36 37 38 
+date Mon Jun 06 11:39:27 AM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 11:39:51 AM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+1559533194.443498date Mon Jun 06 11:40:09 AM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 12:55:31 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 12:55:42 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 12:56:04 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 12:56:13 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+date Mon Jun 06 12:57:34 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+date Mon Jun 06 12:58:03 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
+ can0: 31 32 33 34 35 36 37 38 
