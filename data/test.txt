@@ -1,0 +1,10 @@
+date Tue Jun 06 12:57:10 PM 2019
+base hex  timestamps absolute
+internal events logged
+Begin Triggerblock Thu Jan 01 08:00:00 AM 1970
+0.0000 Start of measurement
+1.0392 can0:  Rx d 8 12 34 56 78 
+13.9600 can0:  Rx d 8 12 34 56 78 
+14.7588 can0:  Rx d 8 12 34 56 78 
+15.4879 can0:  Rx d 8 12 34 56 78 
+16.3177 can0:  Rx d 8 12 34 56 78 
