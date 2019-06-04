@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="379bc23e-f3bd-41ec-b9c4-2fda9fdf3d20" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/data/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -12,7 +13,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/TBOX$main.coverage" NAME="main Coverage Results" MODIFIED="1559125552797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../work_git" />
-    <SUITE FILE_PATH="coverage/TBOX$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1559624227287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TBOX$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1559626363049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-496884776">
@@ -39,12 +40,14 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asc" value="1" />
-          <entry key="txt" value="6" />
+          <entry key="py" value="2" />
+          <entry key="txt" value="13" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="PLAIN_TEXT" value="14" />
+          <entry key="Python" value="2" />
         </counts>
       </usages-collector>
     </session>
@@ -54,21 +57,21 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+            <state relative-caret-position="2575">
+              <caret line="103" column="26" lean-forward="true" selection-start-line="103" selection-start-column="26" selection-end-line="103" selection-end-column="26" />
               <folding>
                 <element signature="e#46#59#0" expanded="true" />
-                <marker date="1559624222707" expanded="true" signature="310:2851" ph="..." />
+                <marker date="1559634275904" expanded="true" signature="310:2851" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/test.asc">
+        <entry file="file://$PROJECT_DIR$/data/test.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="-30792">
+              <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -76,10 +79,23 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../work_git/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="110" column="35" lean-forward="true" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="35" />
+            <state relative-caret-position="-174">
+              <caret line="930" column="18" selection-start-line="930" selection-start-column="4" selection-end-line="930" selection-end-column="18" />
               <folding>
                 <element signature="e#39#93#0" expanded="true" />
+                <element signature="e#4558#5948#0" />
+                <element signature="e#6019#9654#0" />
+                <element signature="e#9716#10284#0" />
+                <element signature="e#10342#10635#0" />
+                <element signature="e#10812#11136#0" />
+                <element signature="e#11158#11317#0" />
+                <element signature="e#11407#13889#0" />
+                <element signature="e#13954#14496#0" />
+                <element signature="e#14567#14867#0" />
+                <element signature="e#14929#18401#0" />
+                <element signature="e#18946#26541#0" />
+                <element signature="e#26596#27764#0" />
+                <element signature="e#27827#40369#0" />
               </folding>
             </state>
           </provider>
@@ -87,14 +103,19 @@
       </file>
     </leaf>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>RECORD_QUE</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/data/test.txt" />
         <option value="$PROJECT_DIR$/data/test.asc" />
+        <option value="$PROJECT_DIR$/data/test.txt" />
         <option value="$PROJECT_DIR$/main2.py" />
       </list>
     </option>
@@ -237,7 +258,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329718" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3362256" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3362256" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -263,17 +284,6 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://D:/Python36/Lib/threading.py" />
-    <entry file="file://$PROJECT_DIR$/data/test.txt" />
-    <entry file="file://$PROJECT_DIR$/../../work_git/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="110" column="35" lean-forward="true" selection-start-line="110" selection-start-column="20" selection-end-line="110" selection-end-column="35" />
-          <folding>
-            <element signature="e#39#93#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/test.asc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
@@ -281,13 +291,53 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../1-Doc/工作日志/wp/dut-client/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13994">
+          <caret line="1376" column="23" selection-start-line="1376" selection-start-column="16" selection-end-line="1376" selection-end-column="23" />
+          <folding>
+            <element signature="e#39#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/test.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-30792">
+          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../work_git/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-174">
+          <caret line="930" column="18" selection-start-line="930" selection-start-column="4" selection-end-line="930" selection-end-column="18" />
+          <folding>
+            <element signature="e#39#93#0" expanded="true" />
+            <element signature="e#4558#5948#0" />
+            <element signature="e#6019#9654#0" />
+            <element signature="e#9716#10284#0" />
+            <element signature="e#10342#10635#0" />
+            <element signature="e#10812#11136#0" />
+            <element signature="e#11158#11317#0" />
+            <element signature="e#11407#13889#0" />
+            <element signature="e#13954#14496#0" />
+            <element signature="e#14567#14867#0" />
+            <element signature="e#14929#18401#0" />
+            <element signature="e#18946#26541#0" />
+            <element signature="e#26596#27764#0" />
+            <element signature="e#27827#40369#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="2575">
+          <caret line="103" column="26" lean-forward="true" selection-start-line="103" selection-start-column="26" selection-end-line="103" selection-end-column="26" />
           <folding>
             <element signature="e#46#59#0" expanded="true" />
-            <marker date="1559624222707" expanded="true" signature="310:2851" ph="..." />
+            <marker date="1559634275904" expanded="true" signature="310:2851" ph="..." />
           </folding>
         </state>
       </provider>
