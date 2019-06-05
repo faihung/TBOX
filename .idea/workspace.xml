@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="379bc23e-f3bd-41ec-b9c4-2fda9fdf3d20" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/data/test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main2.py" beforeDir="false" afterPath="$PROJECT_DIR$/main2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -11,18 +13,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/TBOX$main.coverage" NAME="main Coverage Results" MODIFIED="1559125552797" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../work_git" />
+    <SUITE FILE_PATH="coverage/TBOX$main2__1_.coverage" NAME="main2 (1) Coverage Results" MODIFIED="1559728337815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../../../1-Doc/工作日志/hzl" />
+    <SUITE FILE_PATH="coverage/TBOX$main3__1_.coverage" NAME="main3 (1) Coverage Results" MODIFIED="1559728265887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop" />
+    <SUITE FILE_PATH="coverage/TBOX$main.coverage" NAME="main Coverage Results" MODIFIED="1559649154140" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../../work_git" />
     <SUITE FILE_PATH="coverage/TBOX$main3.coverage" NAME="main3 Coverage Results" MODIFIED="1559648385670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TBOX$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1559626363049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TBOX$main2.coverage" NAME="main2 Coverage Results" MODIFIED="1559727479269" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-496884776">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
           <entry key="project.open.time.15" value="1" />
           <entry key="project.open.time.16" value="2" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -39,53 +45,29 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="asc" value="1" />
-          <entry key="py" value="3" />
-          <entry key="txt" value="13" />
+          <entry key="asc" value="3" />
+          <entry key="py" value="6" />
+          <entry key="txt" value="25" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="14" />
-          <entry key="Python" value="3" />
+          <entry key="PLAIN_TEXT" value="28" />
+          <entry key="Python" value="6" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="467">
-              <caret line="202" column="16" selection-start-line="202" selection-start-column="6" selection-end-line="202" selection-end-column="16" />
-              <folding>
-                <element signature="e#46#59#0" expanded="true" />
-                <marker date="1559644946606" expanded="true" signature="2010:4732" ph="..." />
-                <marker date="1559644946606" expanded="true" signature="4957:5535" ph="..." />
-                <marker date="1559644946606" expanded="true" signature="5629:6319" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main3.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="92" column="20" lean-forward="true" selection-start-line="92" selection-start-column="20" selection-end-line="92" selection-end-column="20" />
+            <state relative-caret-position="1394">
+              <caret line="96" column="28" lean-forward="true" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
               <folding>
                 <element signature="e#46#59#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/data/test.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-33642">
-              <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -93,8 +75,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../work_git/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-16158">
-              <caret line="930" column="18" selection-start-line="930" selection-start-column="4" selection-end-line="930" selection-end-column="18" />
+            <state relative-caret-position="1988">
+              <caret line="899" column="44" lean-forward="true" selection-start-line="899" selection-start-column="44" selection-end-line="899" selection-end-column="44" />
               <folding>
                 <element signature="e#39#93#0" expanded="true" />
                 <element signature="e#4558#5948#0" />
@@ -108,9 +90,16 @@
                 <element signature="e#14567#14867#0" />
                 <element signature="e#14929#18401#0" />
                 <element signature="e#18946#26541#0" />
-                <element signature="e#26596#27764#0" />
-                <element signature="e#27827#40369#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/data/test.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-3797">
+              <caret selection-end-line="173" />
             </state>
           </provider>
         </entry>
@@ -129,9 +118,9 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/data/test.asc" />
-        <option value="$PROJECT_DIR$/data/test.txt" />
-        <option value="$PROJECT_DIR$/main2.py" />
         <option value="$PROJECT_DIR$/main3.py" />
+        <option value="$PROJECT_DIR$/main2.py" />
+        <option value="$PROJECT_DIR$/data/test.txt" />
       </list>
     </option>
   </component>
@@ -142,17 +131,16 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2068" />
-    <option name="y" value="89" />
-    <option name="width" value="1936" />
-    <option name="height" value="737" />
+    <option name="x" value="-24" />
+    <option name="y" value="196" />
+    <option name="width" value="2904" />
+    <option name="height" value="1106" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -169,6 +157,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -189,7 +178,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main3">
+  <component name="RunManager" selected="Python.main2 (1)">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="TBOX" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -212,6 +201,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main2 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="TBOX" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../../../../1-Doc/工作日志/hzl" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../../../../1-Doc/工作日志/hzl/main2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="TBOX" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -226,6 +237,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main3 (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="TBOX" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Desktop" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Desktop/main3.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -260,12 +293,16 @@
       <item itemvalue="Python.main2" />
       <item itemvalue="Python.main" />
       <item itemvalue="Python.main3" />
+      <item itemvalue="Python.main3 (1)" />
+      <item itemvalue="Python.main2 (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main3" />
+        <item itemvalue="Python.main2 (1)" />
+        <item itemvalue="Python.main3 (1)" />
         <item itemvalue="Python.main2" />
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.main3" />
       </list>
     </recent_temporary>
   </component>
@@ -290,9 +327,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.119936034" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.122068234" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -323,6 +359,14 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://D:/Python36/Lib/threading.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../1-Doc/工作日志/wp/dut-client/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13994">
+          <caret line="1376" column="23" selection-start-line="1376" selection-start-column="16" selection-end-line="1376" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main3.py" />
     <entry file="file://$PROJECT_DIR$/data/test.asc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="325">
@@ -330,20 +374,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../../../1-Doc/工作日志/wp/dut-client/main.py">
+    <entry file="file://$PROJECT_DIR$/data/test.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13994">
-          <caret line="1376" column="23" selection-start-line="1376" selection-start-column="16" selection-end-line="1376" selection-end-column="23" />
-          <folding>
-            <element signature="e#39#93#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-3797">
+          <caret selection-end-line="173" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/main3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="97" column="17" lean-forward="true" selection-start-line="97" selection-start-column="17" selection-end-line="97" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../work_git/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16158">
-          <caret line="930" column="18" selection-start-line="930" selection-start-column="4" selection-end-line="930" selection-end-column="18" />
+        <state relative-caret-position="1988">
+          <caret line="899" column="44" lean-forward="true" selection-start-line="899" selection-start-column="44" selection-end-line="899" selection-end-column="44" />
           <folding>
             <element signature="e#39#93#0" expanded="true" />
             <element signature="e#4558#5948#0" />
@@ -357,36 +405,21 @@
             <element signature="e#14567#14867#0" />
             <element signature="e#14929#18401#0" />
             <element signature="e#18946#26541#0" />
-            <element signature="e#26596#27764#0" />
-            <element signature="e#27827#40369#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/test.txt">
+    <entry file="file://$PROJECT_DIR$/../../../../1-Doc/工作日志/hzl/main2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-33642">
-          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        <state relative-caret-position="75">
+          <caret line="10" column="11" lean-forward="true" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="202" column="16" selection-start-line="202" selection-start-column="6" selection-end-line="202" selection-end-column="16" />
-          <folding>
-            <element signature="e#46#59#0" expanded="true" />
-            <marker date="1559644946606" expanded="true" signature="2010:4732" ph="..." />
-            <marker date="1559644946606" expanded="true" signature="4957:5535" ph="..." />
-            <marker date="1559644946606" expanded="true" signature="5629:6319" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="92" column="20" lean-forward="true" selection-start-line="92" selection-start-column="20" selection-end-line="92" selection-end-column="20" />
+        <state relative-caret-position="1394">
+          <caret line="96" column="28" lean-forward="true" selection-start-line="96" selection-start-column="28" selection-end-line="96" selection-end-column="28" />
           <folding>
             <element signature="e#46#59#0" expanded="true" />
           </folding>
