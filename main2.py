@@ -40,6 +40,34 @@ correlation_dic_start_time = {}
 correlation_dic_file = {}
 server_list = []
 
+def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
+    send_time1 = 0
+    while True:
+        if int(round(time.time() * 1000)) > send_time1 + 3000:
+            send_time1 = int(round(time.time() * 1000))
+            mpc5748cmd_temp["content"] = ""
+            s_time = time.mktime(time.localtime(int(time.time()))) - time.mktime(
+                correlation_dic_start_time[props.correlation_id])
+            m, s = divmod(s_time, 60)
+            h, m = divmod(m, 60)
+            mpc5748cmd_temp["elapsed time"] = str(h)[:-2] + 'h' + str(m)[:-2] + 'm' + str(s)[:-2] + 's'
+
+            try:
+                file_size2 = int(os.path.getsize("/mnt/file/logging/test.asc"))
+            except Exception as e:
+                print(e)
+
+            mpc5748cmd_temp["log file size"] = str(file_size2 // 1000) + '.' + (str(file_size2 / 1000).split('.')[
+                1])[
+                                                                               :3] + 'K'
+            mpc5748cmd_temp["type"] = "LOG_STATUS_UPDATE"
+            response = json.dumps(mpc5748cmd_temp)
+            Send_UI_channel2.basic_publish(exchange=HOSTNAME,
+                                           routing_key='Recording_Running',  # props.reply_to,
+                                           properties=pika.BasicProperties(correlation_id= \
+                                                                               props.correlation_id),
+                                           body=response)
+
 def recorder_udp_server(props, body, mpc5748cmd_temp):
     ip_port = ('192.168.0.222', 6666)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
@@ -50,37 +78,12 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     header_written = False
     last_timestamp = None
     started = None
-
-    send_time = 0
-    send_time1 = 0
     send_time2 = 0
 
+    t_server = threading.Thread(target=recorder_udp_server_sessions, name='Record-Thread', args=(props, body, mpc5748cmd_temp))
+    t_server.start()
 
     while True:
-        # if int(round(time.time() * 1000)) > send_time1 + 3000:
-        #     send_time1 = int(round(time.time() * 1000))
-        #     mpc5748cmd_temp["content"] = ""
-        #     s_time = time.mktime(time.localtime(int(time.time()))) - time.mktime(
-        #         correlation_dic_start_time[props.correlation_id])
-        #     m, s = divmod(s_time, 60)
-        #     h, m = divmod(m, 60)
-        #     mpc5748cmd_temp["elapsed time"] = str(h)[:-2] + 'h' + str(m)[:-2] + 'm' + str(s)[:-2] + 's'
-        #
-        #     try:
-        #         file_size2 = int(os.path.getsize("/mnt/file/logging/test.asc"))
-        #     except Exception as e:
-        #         print(e)
-        #
-        #     mpc5748cmd_temp["log file size"] = str(file_size2 // 1000) + '.' + (str(file_size2 / 1000).split('.')[
-        #         1])[
-        #                                                                    :3] + 'K'
-        #     response = json.dumps(mpc5748cmd_temp)
-        #     Send_UI_channel2.basic_publish(exchange=HOSTNAME,
-        #                                    routing_key='Recording_Running',  # props.reply_to,
-        #                                    properties=pika.BasicProperties(correlation_id= \
-        #                                                                        props.correlation_id),
-        #                                    body=response)
-
         data = s.recv(1024).strip().decode()
         # print("444: %s" % data)
         server_reply2 = binascii.hexlify("".join(data).encode()).decode()  #
@@ -147,6 +150,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             # turn into relative timestamps if necessary
             if timestamp >= started:
                 started = timestamp
+
 
     s.close() # 关闭连接
 
