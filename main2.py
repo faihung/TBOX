@@ -33,8 +33,6 @@ def DUT_receive_UI(body):
     return json2python
 
 
-'''-----------------------------------------------------------HeartBeat-----------------------------------------------------------'''
-
 root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
 def recorder_udp_server():
@@ -50,16 +48,11 @@ def recorder_udp_server():
 
     while True:
         data = s.recv(1024).strip().decode()
-        # print(data)
         server_reply2 = binascii.hexlify("".join(data).encode()).decode()  #
-        # print("server_reply2: %s" % server_reply2)
-
         server_reply3 = bytearray.fromhex(server_reply2)
         server_reply4 = list(server_reply3)
-        # print("server_reply4: %s" % server_reply4)#server_reply4: [0, 48, 49, 50, 51, 52, 53, 54]
 
         with open(root_path+'test.asc', 'a') as f:
-        # with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
             # this is the case for the very first message:
             if not header_written:
                 # write start of file header
@@ -85,12 +78,12 @@ def recorder_udp_server():
                 timestamp -= started
                 f.write("%0.4f" % timestamp)
                 f.write(' ')
-                f.write('can0:')
+                f.write('1')#can0:
                 f.write(' ')
-                # can id
-                f.write(' ')
+                f.write('777')# can id
+                f.write('             ')
                 f.write('Rx')
-                f.write(' ')
+                f.write('   ')
                 f.write('d')
                 f.write(' ')
                 f.write('8')
@@ -155,16 +148,11 @@ if __name__ == '__main__':
     credentials = pika.PlainCredentials('guest', 'guest')
     parameters = pika.ConnectionParameters(host_address, 5672, '/', credentials)
 
-    # HB_connection = pika.BlockingConnection(parameters)
     Mpc5748Cmd_connection = pika.BlockingConnection(parameters)
-
-    # HB_channel = HB_connection.channel()
     Mpc5748Cmd_channel = Mpc5748Cmd_connection.channel()
 
-    # t0 = threading.Thread(target=heartbeat, name='HeartBeat-Thread', args=())
     t_server = threading.Thread(target=recorder_udp_server, name='Record-Thread', args=())
     t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
 
-    # t0.start()
     t_server.start()
     t_client.start()
