@@ -9,21 +9,21 @@ import time
 
 import pika
 import json
-
+from modules import db
 
 host_address = 'www.dingauto.cn'
 FORMAT_MESSAGE = "{channel}  {id:<15} Rx   {dtype} {data}"
 FORMAT_DATE = "%a %b %m %I:%M:%S %p %Y"
 FORMAT_EVENT = "{timestamp: 9.4f} {message}\n"
 
-# def get_mac_address():
-#     with open('/sys/class/net/wlan0/address', 'r') as w:
-#         mac = w.readlines()[0][:-1]
-#     return mac.replace(":","-")
+def get_mac_address():
+    with open('/sys/class/net/wlan0/address', 'r') as w:
+        mac = w.readlines()[0][:-1]
+    return mac.replace(":","-")
 
-# HOSTNAME = get_mac_address()
-
-MPC5748_QUE = '00:0F:00:C3:F6:EB_R_v'
+HOSTNAME = get_mac_address()
+# MPC5748_QUE = '00:0F:00:C3:F6:EB_R_v'
+MPC5748_QUE = HOSTNAME + '_R_v'
 
 def DUT_receive_UI(body):
     print("DUT_receive_UI start...")
@@ -34,46 +34,11 @@ def DUT_receive_UI(body):
 
 
 '''-----------------------------------------------------------HeartBeat-----------------------------------------------------------'''
-# heart_dic = {
-#     'source': 'source_clientID',
-#     'destination': 'destination_clientID',
-#     'type': 'HEARTBEAT',
-#     'content': '',
-#
-#     'channel status': {},
-#     'MAC': HOSTNAME
-# }
-# def fun_timer():
-#     # print("heart_dic %s" % heart_dic)
-#     json_heart = json.dumps(heart_dic)
-#     # print("json_heart %s" % json_heart)
-#     # print("HOST-MAC: %s" % HOSTNAME)
-#     HB_channel.basic_publish(exchange='online_client',
-#                              routing_key='DUT_online',
-#                              body=json_heart)
-#     global timer
-#     timer = threading.Timer(5, fun_timer)
-#     timer.start()
-#
-#
-# def heartbeat():  # 线程任务函数 heartbeat()
-#     print('%s is running...' % threading.current_thread().name)
-#     timer = threading.Timer(1, fun_timer)
-#     timer.start()
-#     HB_channel.start_consuming()
 
-
-
-
-
-
-
-
-
-
+root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
 def recorder_udp_server():
-    ip_port = ('192.168.0.221', 6666)
+    ip_port = ('192.168.0.222', 6666)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     s.bind(ip_port)
 
@@ -93,8 +58,8 @@ def recorder_udp_server():
         server_reply4 = list(server_reply3)
         # print("server_reply4: %s" % server_reply4)#server_reply4: [0, 48, 49, 50, 51, 52, 53, 54]
 
-        # with open('/home/root/test.asc', 'a') as f:
-        with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
+        with open(root_path+'test.asc', 'a') as f:
+        # with open(r'F:\yhh\0-Source\work\work_data_collect_record\TBOX\data\test.txt', 'a') as f:
             # this is the case for the very first message:
             if not header_written:
                 # write start of file header
@@ -142,33 +107,28 @@ def recorder_udp_server():
     s.close() # 关闭连接
 
 '''-----------------------------------------------------------config_client-----------------------------------------------------------'''
-
 def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
-    ip_port = ('192.168.0.200', 8)  #ip_port = ('127.0.0.1', 6666)#
+    my_db = db.MySqlConn()
+    ip_port = ('192.168.0.200', 8)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8) #  #
     s = socket.socket()
     s.connect(ip_port)
-    inp = "On,12345678,Add".encode()
-    print("2")
-    s.sendall(inp)
-    print("2")
-    # while True:  # 通过一个死循环不断接收用户输入，并发送给服务器
-    #     inp = input("Please enter the information to be sent: ").strip()
-    #     print("1: %s" % inp)
-    #     print("2")
-    #     # print("On,12345678,Add".strip())
-    #     print("2")
-    #     if not inp:  # 防止输入空信息，导致异常退出
-    #         continue
-    #     print(inp.encode('UTF-8'))
-    #     print("3")
-    #     s.sendall(inp.encode())
-    #
-    #     if inp == "exit":  # 如果输入的是‘exit’，表示断开连接
-    #         break
-    #
-    #     server_reply = s.recv(1024).decode()
-    #     print("server_reply: %s" % server_reply)
-    s.close()  # 关闭连接
+    if mpc5748cmd_temp["type"] == "LOG_START_REQ":  # record start
+        inp = "On,12345678,Add".encode()
+        print("1")
+        s.sendall(inp)
+        print("1")
+        # s.close()
+    elif mpc5748cmd_temp["type"] == "LOG_END_REQ":  # record end
+        inp = "Off,12345678,Add".encode()
+        print("2")
+        s.sendall(inp)
+        print("2")
+        # s.close()
+        # db record file msg
+        my_db.insert_record(db.file_type_to_table['log'],
+                            ("test.asc", props.correlation_id,
+                             time.strftime("%Y-%m-%d", time.localtime()), '',
+                             '', '',''))
 
 def on_request_mpc5748(Mpc5748Cmd_channel, method, props, body):
     json2python_mpc5748cmd = DUT_receive_UI(body)
