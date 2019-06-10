@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
 import socket
 import threading
 import binascii
-from datetime import datetime
 import time
+import datetime
+# from datetime import datetime
+
 import os
 
 import pika
@@ -34,6 +35,12 @@ def DUT_receive_UI(body):
     return json2python
 
 
+def get_filename(format):
+    now = datetime.datetime.now()
+    otherStyleTime = now.strftime("%Y-%m-%d_%H%M%S")
+    return "dut_" + get_mac_address() + '_' + otherStyleTime + '.' + str(format).lower()
+    # return "dut_" + get_mac_address() + '_' + otherStyleTime + '.asc'#.log
+
 root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
 correlation_dic_start_time = {}
@@ -44,6 +51,10 @@ server_list = []
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     send_time1 = 0
     correlation_dic_pid[props.correlation_id] = True
+
+    f = open(root_path+correlation_dic_file[props.correlation_id], "w")
+    f.write("Python...\n")
+    f.close()
     while correlation_dic_pid[props.correlation_id]:
         if int(round(time.time() * 1000)) > send_time1 + 3000:
             send_time1 = int(round(time.time() * 1000))
@@ -55,7 +66,9 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
             mpc5748cmd_temp["elapsed time"] = str(h)[:-2] + 'h' + str(m)[:-2] + 'm' + str(s)[:-2] + 's'
 
             try:
-                file_size2 = int(os.path.getsize("/mnt/file/logging/test.asc"))
+                # file_size2 = int(os.path.getsize("/mnt/file/logging/" + correlation_dic_file[
+                #     props.correlation_id]))
+                file_size2 = int(os.path.getsize(root_path + correlation_dic_file[props.correlation_id]))
             except Exception as e:
                 print(e)
 
@@ -85,15 +98,14 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     t_server = threading.Thread(target=recorder_udp_server_sessions, name='Record-Thread', args=(props, body, mpc5748cmd_temp))
     t_server.start()
 
-    while True:
+    # while True:
+    while correlation_dic_pid[props.correlation_id]:
         data = s.recv(1024).strip().decode()
-        # print("444: %s" % data)
         server_reply2 = binascii.hexlify("".join(data).encode()).decode()  #
         server_reply3 = bytearray.fromhex(server_reply2)
         server_reply4 = list(server_reply3)
         for i in range(len(server_reply4)):
             server_list.append(str(hex(server_reply4[i]))[2:])
-        # print("555: %s" % server_list)
         mpc5748cmd_temp["content"] = str(server_list) + '\n'
         server_list.clear()
         if int(round(time.time() * 1000)) > send_time2 + 300:
@@ -108,11 +120,11 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             # ***publish之后，content要清空***
             mpc5748cmd_temp["content"] = ""
 
-        with open(root_path+'test.asc', 'a') as f:
+        with open(root_path+correlation_dic_file[props.correlation_id], 'a') as f:
             # this is the case for the very first message:
             if not header_written:
                 # write start of file header
-                now = datetime.now().strftime("%a %b %m %I:%M:%S %p %Y")
+                now = datetime.datetime.now().strftime("%a %b %m %I:%M:%S %p %Y")
                 f.write("date %s\n" % now)
                 f.write("base hex  timestamps absolute\n")
                 f.write("internal events logged\n")
@@ -153,8 +165,8 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             if timestamp >= started:
                 started = timestamp
 
-
     s.close() # 关闭连接
+    print("close udp -----------------------------------------------------------")
 
 '''-----------------------------------------------------------config_client-----------------------------------------------------------'''
 def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
@@ -168,6 +180,10 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         s.sendall(inp)
         print("1")
         # s.close()
+
+        mpc5748cmd_temp["file format"] = 'ASC'
+        correlation_dic_file[props.correlation_id] = get_filename(mpc5748cmd_temp["file format"])
+        # path_file = "/mnt/file/logging/" + correlation_dic_file[props.correlation_id]
 
         correlation_dic_start_time[props.correlation_id] = time.localtime(int(time.time()))
         print("Add Correlation_dic_start_time: %s" % correlation_dic_start_time)
@@ -184,10 +200,14 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         correlation_dic_pid[props.correlation_id] = False
         # s.close()
         # db record file msg
+        # my_db.insert_record(db.file_type_to_table['log'],
+        #                     ("test.asc", props.correlation_id,
+        #                      time.strftime("%Y-%m-%d", time.localtime()), '',
+        #                      '', '',''))
         my_db.insert_record(db.file_type_to_table['log'],
-                            ("test.asc", props.correlation_id,
+                            (correlation_dic_file[props.correlation_id], props.correlation_id,
                              time.strftime("%Y-%m-%d", time.localtime()), '',
-                             '', '',''))
+                             '', '', ''))
 
 def on_request_mpc5748(Mpc5748Cmd_channel, method, props, body):
     json2python_mpc5748cmd = DUT_receive_UI(body)
