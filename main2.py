@@ -17,7 +17,7 @@ host_address = 'www.dingauto.cn'
 FORMAT_MESSAGE = "{channel}  {id:<15} Rx   {dtype} {data}"
 FORMAT_DATE = "%a %b %m %I:%M:%S %p %Y"
 FORMAT_EVENT = "{timestamp: 9.4f} {message}\n"
-
+num = 0
 def get_mac_address():
     with open('/sys/class/net/wlan0/address', 'r') as w:
         mac = w.readlines()[0][:-1]
@@ -33,10 +33,10 @@ def DUT_receive_UI(body):
     return json2python
 
 
-def get_filename(format):
+def get_filename(n,format):
     now = datetime.datetime.now()
     otherStyleTime = now.strftime("%Y-%m-%d_%H%M%S")
-    return "dut_" + get_mac_address() + '_' + otherStyleTime + '.' + str(format).lower()
+    return "dut_" + get_mac_address() + '_' + otherStyleTime + '.'+ str(n) + '.'+ str(format).lower()
 
 root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
@@ -47,6 +47,7 @@ server_list = []
 
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     send_time1 = 0
+    global num
     correlation_dic_pid[props.correlation_id] = True
 
     f = open(root_path+correlation_dic_file[props.correlation_id], "w")
@@ -70,6 +71,13 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
             mpc5748cmd_temp["log file size"] = str(file_size2 // 1000) + '.' + (str(file_size2 / 1000).split('.')[
                 1])[
                                                                                :3] + 'K'
+            # print("1111: %s" % mpc5748cmd_temp["log file size"])
+            if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50000:
+                print("file >50M")
+                num = num +1
+                correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
+
+
             mpc5748cmd_temp["type"] = "LOG_STATUS_UPDATE"
             response = json.dumps(mpc5748cmd_temp)
             Send_UI_channel2.basic_publish(exchange=HOSTNAME,
@@ -100,9 +108,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
         server_reply4 = list(server_reply3)
         for i in range(len(server_reply4)):
             server_list.append(str(hex(server_reply4[i]))[2:])
-        # mpc5748cmd_temp["content"] = str(server_list) + '\n'
         mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'',"") + '\n'
-        # mpc5748cmd_temp["content"] = "31 32 33 34 35 36 37 38" + '\n'
         server_list.clear()
         if int(round(time.time() * 1000)) > send_time2 + 300:
             send_time2 = int(round(time.time() * 1000))
@@ -178,7 +184,7 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         # s.close()
 
         mpc5748cmd_temp["file format"] = 'ASC'
-        correlation_dic_file[props.correlation_id] = get_filename(mpc5748cmd_temp["file format"])
+        correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
         correlation_dic_start_time[props.correlation_id] = time.localtime(int(time.time()))
         print("Add Correlation_dic_start_time: %s" % correlation_dic_start_time)
         mpc5748cmd_temp['content'] = {}
