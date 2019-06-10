@@ -100,7 +100,9 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
         server_reply4 = list(server_reply3)
         for i in range(len(server_reply4)):
             server_list.append(str(hex(server_reply4[i]))[2:])
-        mpc5748cmd_temp["content"] = str(server_list) + '\n'
+        # mpc5748cmd_temp["content"] = str(server_list) + '\n'
+        mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'',"") + '\n'
+        # mpc5748cmd_temp["content"] = "31 32 33 34 35 36 37 38" + '\n'
         server_list.clear()
         if int(round(time.time() * 1000)) > send_time2 + 300:
             send_time2 = int(round(time.time() * 1000))
