@@ -181,6 +181,7 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         print("2")
         s.sendall(inp)
         print("2")
+        correlation_dic_pid[props.correlation_id] = False
         # s.close()
         # db record file msg
         my_db.insert_record(db.file_type_to_table['log'],
