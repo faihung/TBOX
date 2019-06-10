@@ -38,11 +38,13 @@ root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
 correlation_dic_start_time = {}
 correlation_dic_file = {}
+correlation_dic_pid = {}
 server_list = []
 
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     send_time1 = 0
-    while True:
+    correlation_dic_pid[props.correlation_id] = True
+    while correlation_dic_pid[props.correlation_id]:
         if int(round(time.time() * 1000)) > send_time1 + 3000:
             send_time1 = int(round(time.time() * 1000))
             mpc5748cmd_temp["content"] = ""
