@@ -73,7 +73,7 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
                                                                                :3] + 'K'
             # print("1111: %s" % mpc5748cmd_temp["log file size"])
             if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50000:
-                print("file >50M")
+                print("File greater than 50M ...")
                 num = num +1
                 correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
 
