@@ -46,6 +46,12 @@ correlation_dic_pid = {}
 server_list = []
 
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
+    print("Awaiting RPC requests... %s is running3..." % threading.current_thread().name)
+    credentials = pika.PlainCredentials('guest', 'guest')
+    parameters = pika.ConnectionParameters(host_address, 5672, '/', credentials)
+    Send_UI_connection3 = pika.BlockingConnection(parameters)
+    Send_UI_channel3 = Send_UI_connection3.channel()
+
     send_time1 = 0
     global num
     correlation_dic_pid[props.correlation_id] = True
@@ -73,20 +79,26 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
                                                                                :3] + 'K'
             # print("1111: %s" % mpc5748cmd_temp["log file size"])
             if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50000:
-                print("File greater than 50M ...")
+                print("file >50M")
                 num = num +1
                 correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
 
 
             mpc5748cmd_temp["type"] = "LOG_STATUS_UPDATE"
             response = json.dumps(mpc5748cmd_temp)
-            Send_UI_channel2.basic_publish(exchange=HOSTNAME,
+            Send_UI_channel3.basic_publish(exchange=HOSTNAME,
                                            routing_key='Recording_Running',  # props.reply_to,
                                            properties=pika.BasicProperties(correlation_id= \
                                                                                props.correlation_id),
                                            body=response)
 
 def recorder_udp_server(props, body, mpc5748cmd_temp):
+    print("Awaiting RPC requests... %s is running2..." % threading.current_thread().name)
+    credentials = pika.PlainCredentials('guest', 'guest')
+    parameters = pika.ConnectionParameters(host_address, 5672, '/', credentials)
+    Send_UI_connection2 = pika.BlockingConnection(parameters)
+    Send_UI_channel2 = Send_UI_connection2.channel()
+
     ip_port = ('192.168.0.222', 6666)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     s.bind(ip_port)
@@ -101,6 +113,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     t_server = threading.Thread(target=recorder_udp_server_sessions, name='Record-Thread', args=(props, body, mpc5748cmd_temp))
     t_server.start()
 
+    correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
         data = s.recv(1024).strip().decode()
         server_reply2 = binascii.hexlify("".join(data).encode()).decode()  #
@@ -229,11 +242,9 @@ def config_client():
 if __name__ == '__main__':
     credentials = pika.PlainCredentials('guest', 'guest')
     parameters = pika.ConnectionParameters(host_address, 5672, '/', credentials)
-
     Mpc5748Cmd_connection = pika.BlockingConnection(parameters)
     Mpc5748Cmd_channel = Mpc5748Cmd_connection.channel()
-    Send_UI_connection2 = pika.BlockingConnection(parameters)
-    Send_UI_channel2 = Send_UI_connection2.channel()
+
 
     t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
     t_client.start()
