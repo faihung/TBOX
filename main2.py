@@ -6,6 +6,8 @@ import binascii
 import time
 import datetime
 # from datetime import datetime
+import sys
+import struct
 
 import os
 
@@ -53,7 +55,13 @@ correlation_dic_start_time = {}
 correlation_dic_file = {}
 correlation_dic_pid = {}
 server_list = []
+data_analysis_list = []
 data_list = []
+server_reply4 = []
+
+id_list = []
+ch_dlc_list = []
+ts_list = []
 
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     print("Awaiting RPC requests... %s is running3..." % threading.current_thread().name)
@@ -125,9 +133,10 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
 
     correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
-        data = s.recv(1024).strip().decode()
+        # data = s.recv(1024).strip().decode()
+        data = s.recv(1024)
         # print("------------------------------------------------------")
-        # print(data)
+        print(data)
         # print(len(data))
         for i in range(len(data)):
             if (i+1)%16 == 0:
@@ -135,15 +144,40 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             else:
                 pass
 
+        print("data_list: %s" % data_list)
         for j in range(len(data_list)):
-            # print(data_list[j])
-            server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[j]).encode()).decode()))
-            # print(server_reply4)
+            data_analysis = struct.unpack('IBBHBBBBBBBB', data_list[j])
+            for k in data_analysis:
+                # print(hex(k))
+                data_analysis_list.append(hex(k))
+            print("data_analysis_list: %s" % data_analysis_list)
+            id = hex(data_analysis[0])  # 4bytes
+            ch_dlc = hex(data_analysis[1])  # 1Byte
+            ch = int(data_analysis[1])>>4
+            dlc = int(data_analysis[1])&0xF
+            ts1 = int(data_analysis[2]<<16)  # 1Byte
+            ts2 = int(data_analysis[3])  # 2Byte
+            ts = int(ts1) + int(ts2)
+
+            print("id: %s" % id)
+            print("ch_dlc: %s" % ch_dlc)
+            print("ch: %s" % ch)
+            print("dlc: %s" % dlc)
+            print("ts1: %s" % ts1)
+            print("ts2: %s" % ts2)
+            print("ts: %s" % hex(ts))
+
+            # print("server_reply4: %s" % server_reply4)
+            # server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[j][8:15]).encode()).decode()))#只要后8个Byte
+            server_reply4 = data_analysis_list[4:12]
+            print("server_reply4: %s" % server_reply4)
 
             #Sessions
-            for k in range(len(server_reply4)):
-                server_list.append(str(hex(server_reply4[k]))[2:])
-            mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'', "") + '\n'
+            for l in range(len(server_reply4)):
+                server_list.append(server_reply4[l][2:])
+
+            print("server_list: %s" % server_list)
+            mpc5748cmd_temp["content"] =  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
                 send_time2 = int(round(time.time() * 1000))
@@ -156,6 +190,9 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                                                body=response)
                 # ***publish之后，content要清空***
                 mpc5748cmd_temp["content"] = ""
+
+        data_analysis_list.clear()
+        data_list.clear()
         # print("------------------------------------------------------")
 
         with open(root_path+correlation_dic_file[props.correlation_id], 'a') as f:
