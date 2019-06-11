@@ -53,6 +53,7 @@ correlation_dic_start_time = {}
 correlation_dic_file = {}
 correlation_dic_pid = {}
 server_list = []
+data_list = []
 
 def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     print("Awaiting RPC requests... %s is running3..." % threading.current_thread().name)
@@ -125,16 +126,23 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
         data = s.recv(1024).strip().decode()
-        print("------------------------------------------------------")
-        data_list = data.split('\n')
-        for i in range(len(data_list)):
-            print(data_list[i])
-            server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[i]).encode()).decode()))
-            print(server_reply4)
+        # print("------------------------------------------------------")
+        # print(data)
+        # print(len(data))
+        for i in range(len(data)):
+            if (i+1)%16 == 0:
+                data_list.append(data[i-15:i+1])# data_list = data.split('\n')
+            else:
+                pass
+
+        for j in range(len(data_list)):
+            # print(data_list[j])
+            server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[j]).encode()).decode()))
+            # print(server_reply4)
 
             #Sessions
-            for j in range(len(server_reply4)):
-                server_list.append(str(hex(server_reply4[i]))[2:])
+            for k in range(len(server_reply4)):
+                server_list.append(str(hex(server_reply4[k]))[2:])
             mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'', "") + '\n'
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
@@ -148,8 +156,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                                                body=response)
                 # ***publish之后，content要清空***
                 mpc5748cmd_temp["content"] = ""
-        print("------------------------------------------------------")
-
+        # print("------------------------------------------------------")
 
         with open(root_path+correlation_dic_file[props.correlation_id], 'a') as f:
             # this is the case for the very first message:
