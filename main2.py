@@ -17,7 +17,10 @@ host_address = 'www.dingauto.cn'
 FORMAT_MESSAGE = "{channel}  {id:<15} Rx   {dtype} {data}"
 FORMAT_DATE = "%a %b %m %I:%M:%S %p %Y"
 FORMAT_EVENT = "{timestamp: 9.4f} {message}\n"
-num = 0
+
+now_flag = 0
+otherStyleTime = 0
+
 def get_mac_address():
     with open('/sys/class/net/wlan0/address', 'r') as w:
         mac = w.readlines()[0][:-1]
@@ -34,8 +37,14 @@ def DUT_receive_UI(body):
 
 
 def get_filename(n,format):
-    now = datetime.datetime.now()
-    otherStyleTime = now.strftime("%Y-%m-%d_%H%M%S")
+    global now_flag
+    # global now
+    global otherStyleTime
+    if now_flag == 0:
+        now = datetime.datetime.now()
+        otherStyleTime = now.strftime("%Y-%m-%d_%H%M%S")
+        now_flag = 1
+
     return "dut_" + get_mac_address() + '_' + otherStyleTime + '.'+ str(n) + '.'+ str(format).lower()
 
 root_path = db.root_path['log']
@@ -53,7 +62,7 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     Send_UI_channel3 = Send_UI_connection3.channel()
 
     send_time1 = 0
-    global num
+    num = 0
     correlation_dic_pid[props.correlation_id] = True
 
     f = open(root_path+correlation_dic_file[props.correlation_id], "w")
@@ -78,7 +87,7 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
                 1])[
                                                                                :3] + 'K'
             # print("1111: %s" % mpc5748cmd_temp["log file size"])
-            if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50000:
+            if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50:#50000:
                 print("file >50M")
                 num = num +1
                 correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
@@ -116,24 +125,31 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
         data = s.recv(1024).strip().decode()
-        server_reply2 = binascii.hexlify("".join(data).encode()).decode()  #
-        server_reply3 = bytearray.fromhex(server_reply2)
-        server_reply4 = list(server_reply3)
-        for i in range(len(server_reply4)):
-            server_list.append(str(hex(server_reply4[i]))[2:])
-        mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'',"") + '\n'
-        server_list.clear()
-        if int(round(time.time() * 1000)) > send_time2 + 300:
-            send_time2 = int(round(time.time() * 1000))
-            mpc5748cmd_temp["content"] = mpc5748cmd_temp["content"][:-1]
-            response = json.dumps(mpc5748cmd_temp)
-            Send_UI_channel2.basic_publish(exchange='',
-                                           routing_key=props.reply_to,
-                                           properties=pika.BasicProperties(correlation_id= \
-                                                                               props.correlation_id),
-                                           body=response)
-            # ***publish之后，content要清空***
-            mpc5748cmd_temp["content"] = ""
+        print("------------------------------------------------------")
+        data_list = data.split('\n')
+        for i in range(len(data_list)):
+            print(data_list[i])
+            server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[i]).encode()).decode()))
+            print(server_reply4)
+
+            #Sessions
+            for j in range(len(server_reply4)):
+                server_list.append(str(hex(server_reply4[i]))[2:])
+            mpc5748cmd_temp["content"] = " ".join(server_list).replace('\'', "") + '\n'
+            server_list.clear()
+            if int(round(time.time() * 1000)) > send_time2 + 300:
+                send_time2 = int(round(time.time() * 1000))
+                mpc5748cmd_temp["content"] = mpc5748cmd_temp["content"][:-1]
+                response = json.dumps(mpc5748cmd_temp)
+                Send_UI_channel2.basic_publish(exchange='',
+                                               routing_key=props.reply_to,
+                                               properties=pika.BasicProperties(correlation_id= \
+                                                                                   props.correlation_id),
+                                               body=response)
+                # ***publish之后，content要清空***
+                mpc5748cmd_temp["content"] = ""
+        print("------------------------------------------------------")
+
 
         with open(root_path+correlation_dic_file[props.correlation_id], 'a') as f:
             # this is the case for the very first message:
@@ -197,7 +213,10 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         # s.close()
 
         mpc5748cmd_temp["file format"] = 'ASC'
-        correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
+        global now_flag
+        now_flag = 0
+        num1 = 0
+        correlation_dic_file[props.correlation_id] = get_filename(num1,mpc5748cmd_temp["file format"])
         correlation_dic_start_time[props.correlation_id] = time.localtime(int(time.time()))
         print("Add Correlation_dic_start_time: %s" % correlation_dic_start_time)
         mpc5748cmd_temp['content'] = {}
