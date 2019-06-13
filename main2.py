@@ -117,7 +117,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     Send_UI_connection2 = pika.BlockingConnection(parameters)
     Send_UI_channel2 = Send_UI_connection2.channel()
 
-    ip_port = ('192.168.0.222', 6666)
+    ip_port = ('192.168.10.222', 6666)
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
     s.bind(ip_port)
 
@@ -134,9 +134,9 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
         # data = s.recv(1024).strip().decode()
-        data = s.recv(1024)
+        data = s.recv(1280)
         # print("------------------------------------------------------")
-        print(data)
+        # print(data)
         # print(len(data))
         for i in range(len(data)):
             if (i+1)%16 == 0:
@@ -144,39 +144,45 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             else:
                 pass
 
-        print("data_list: %s" % data_list)
+        # print("data_list: %s" % data_list)
         for j in range(len(data_list)):
-            data_analysis = struct.unpack('IBBHBBBBBBBB', data_list[j])
+            # data_analysis = struct.unpack('IBBHBBBBBBBB', data_list[j])
+            data_analysis = struct.unpack('BBBBBBHBBBBBBBB', data_list[j])
             for k in data_analysis:
                 # print(hex(k))
                 data_analysis_list.append(hex(k))
-            print("data_analysis_list: %s" % data_analysis_list)
-            id = hex(data_analysis[0])  # 4bytes
-            ch_dlc = hex(data_analysis[1])  # 1Byte
-            ch = int(data_analysis[1])>>4
-            dlc = int(data_analysis[1])&0xF
-            ts1 = int(data_analysis[2]<<16)  # 1Byte
-            ts2 = int(data_analysis[3])  # 2Byte
-            ts = int(ts1) + int(ts2)
+            # print("data_analysis_list: %s" % data_analysis_list)
+            id1 = int(data_analysis[0]<<24)  # 4bytes
+            id2 = int(data_analysis[1]<<16)
+            id3 = int(data_analysis[2]<<8)
+            id4 = int(data_analysis[3])
+            id = hex(id1|id2|id3|id4)
 
+            ch_dlc = hex(data_analysis[4])  # 1Byte
+            ch = int(data_analysis[4])>>4
+            dlc = int(data_analysis[4])&0xF
+
+            ts1 = int(data_analysis[5]<<16)  # 1Byte
+            ts2 = int(data_analysis[6])  # 2Byte
+            ts = int(ts1) + int(ts2)
             print("id: %s" % id)
-            print("ch_dlc: %s" % ch_dlc)
-            print("ch: %s" % ch)
-            print("dlc: %s" % dlc)
-            print("ts1: %s" % ts1)
-            print("ts2: %s" % ts2)
-            print("ts: %s" % hex(ts))
+            # print("ch_dlc: %s" % ch_dlc)
+            # print("ch: %s" % ch)
+            # print("dlc: %s" % dlc)
+            # print("ts1: %s" % ts1)
+            # print("ts2: %s" % ts2)
+            # print("ts: %s" % hex(ts))
 
             # print("server_reply4: %s" % server_reply4)
             # server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[j][8:15]).encode()).decode()))#只要后8个Byte
-            server_reply4 = data_analysis_list[4:12]
-            print("server_reply4: %s" % server_reply4)
+            server_reply4 = data_analysis_list[7:15]
+            # print("server_reply4: %s" % server_reply4)
 
             #Sessions
             for l in range(len(server_reply4)):
                 server_list.append(server_reply4[l][2:])
 
-            print("server_list: %s" % server_list)
+            # print("server_list: %s" % server_list)
             mpc5748cmd_temp["content"] =  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
@@ -219,11 +225,12 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             else:
                 timestamp = time.time()
                 timestamp -= started
-                f.write("%0.4f" % timestamp)
+                # f.write("%0.4f" % timestamp)
+                f.write("%f" % ts)
                 f.write(' ')
-                f.write('1')#can0:
+                f.write(str(ch))#can0:
                 f.write(' ')
-                f.write('777')# can id
+                f.write(str(id))# can id
                 f.write('             ')
                 f.write('Rx')
                 f.write('   ')
@@ -231,8 +238,9 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                 f.write(' ')
                 f.write('8')
                 f.write(' ')
-                for i in range(len(server_reply4)):
-                    f.write(str(hex(server_reply4[i]))[2:])
+                for m in range(len(server_reply4)):
+                    # f.write(str(hex(server_reply4[m]))[2:])
+                    f.write(server_reply4[m][2:])
                     f.write(' ')
                 f.write('\n')
 
@@ -246,7 +254,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
 '''-----------------------------------------------------------config_client-----------------------------------------------------------'''
 def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
     my_db = db.MySqlConn()
-    ip_port = ('192.168.0.200', 8)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8) #  #
+    ip_port = ('192.168.10.3', 5555)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8) #  #
     s = socket.socket()
     s.connect(ip_port)
     if mpc5748cmd_temp["type"] == "LOG_START_REQ":  # record start
