@@ -49,6 +49,11 @@ def get_filename(n,format):
 
     return "dut_" + get_mac_address() + '_' + otherStyleTime + '.'+ str(n) + '.'+ str(format).lower()
 
+    # now = datetime.datetime.now()
+    # otherStyleTime = now.strftime("%Y-%m-%d_%H%M%S")
+    # return "dut_" + get_mac_address() + '_' + otherStyleTime + '.' + str(format).lower()
+
+
 root_path = db.root_path['log']
 '''-----------------------------------------------------------recorder_udp_server-----------------------------------------------------------'''
 correlation_dic_start_time = {}
@@ -70,13 +75,12 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
     Send_UI_connection3 = pika.BlockingConnection(parameters)
     Send_UI_channel3 = Send_UI_connection3.channel()
 
+    my_db = db.MySqlConn()
     send_time1 = 0
     num = 0
-    correlation_dic_pid[props.correlation_id] = True
-
     f = open(root_path+correlation_dic_file[props.correlation_id], "w")
-    # f.write("Python...\n")
     f.close()
+    correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
         if int(round(time.time() * 1000)) > send_time1 + 3000:
             send_time1 = int(round(time.time() * 1000))
@@ -98,8 +102,14 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
             # print("1111: %s" % mpc5748cmd_temp["log file size"])
             if int(mpc5748cmd_temp["log file size"][:-1].split('.')[0]) >= 50:#50000:
                 print("file >50M")
+                print("1-correlation_dic_file[props.correlation_id]: %s" % correlation_dic_file[props.correlation_id])
+                my_db.insert_record(db.file_type_to_table['log'],
+                                    (correlation_dic_file[props.correlation_id], props.correlation_id,
+                                     time.strftime("%Y-%m-%d", time.localtime()), '',
+                                     '', '', ''))
                 num = num +1
                 correlation_dic_file[props.correlation_id] = get_filename(num,mpc5748cmd_temp["file format"])
+                print("2-correlation_dic_file[props.correlation_id]: %s" % correlation_dic_file[props.correlation_id])
 
 
             mpc5748cmd_temp["type"] = "LOG_STATUS_UPDATE"
@@ -109,6 +119,7 @@ def recorder_udp_server_sessions(props, body, mpc5748cmd_temp):
                                            properties=pika.BasicProperties(correlation_id= \
                                                                                props.correlation_id),
                                            body=response)
+    del correlation_dic_pid[props.correlation_id]
 
 def recorder_udp_server(props, body, mpc5748cmd_temp):
     print("Awaiting RPC requests... %s is running2..." % threading.current_thread().name)
@@ -133,56 +144,33 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
 
     correlation_dic_pid[props.correlation_id] = True
     while correlation_dic_pid[props.correlation_id]:
-        # data = s.recv(1024).strip().decode()
-        data = s.recv(1280)
-        # print("------------------------------------------------------")
-        # print(data)
-        # print(len(data))
+        data = s.recv(1280)# data = s.recv(1024).strip().decode()
         for i in range(len(data)):
             if (i+1)%16 == 0:
                 data_list.append(data[i-15:i+1])# data_list = data.split('\n')
             else:
                 pass
 
-        # print("data_list: %s" % data_list)
         for j in range(len(data_list)):
-            # data_analysis = struct.unpack('IBBHBBBBBBBB', data_list[j])
             data_analysis = struct.unpack('BBBBBBHBBBBBBBB', data_list[j])
             for k in data_analysis:
-                # print(hex(k))
                 data_analysis_list.append(hex(k))
-            # print("data_analysis_list: %s" % data_analysis_list)
+
             id1 = int(data_analysis[0]<<24)  # 4bytes
             id2 = int(data_analysis[1]<<16)
             id3 = int(data_analysis[2]<<8)
             id4 = int(data_analysis[3])
             id = hex(id1|id2|id3|id4)
-
             ch_dlc = hex(data_analysis[4])  # 1Byte
             ch = int(data_analysis[4])>>4
             dlc = int(data_analysis[4])&0xF
-
             ts1 = int(data_analysis[5]<<16)  # 1Byte
             ts2 = int(data_analysis[6])  # 2Byte
             ts = int(ts1) + int(ts2)
-            print("id: %s" % id)
-            # print("ch_dlc: %s" % ch_dlc)
-            # print("ch: %s" % ch)
-            # print("dlc: %s" % dlc)
-            # print("ts1: %s" % ts1)
-            # print("ts2: %s" % ts2)
-            # print("ts: %s" % hex(ts))
 
-            # print("server_reply4: %s" % server_reply4)
-            # server_reply4 = list(bytearray.fromhex(binascii.hexlify("".join(data_list[j][8:15]).encode()).decode()))#只要后8个Byte
             server_reply4 = data_analysis_list[7:15]
-            # print("server_reply4: %s" % server_reply4)
-
-            #Sessions
             for l in range(len(server_reply4)):
                 server_list.append(server_reply4[l][2:])
-
-            # print("server_list: %s" % server_list)
             mpc5748cmd_temp["content"] =  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
@@ -225,8 +213,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             else:
                 timestamp = time.time()
                 timestamp -= started
-                # f.write("%0.4f" % timestamp)
-                f.write("%f" % ts)
+                f.write("%d" % ts)
                 f.write(' ')
                 f.write(str(ch))#can0:
                 f.write(' ')
@@ -239,8 +226,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                 f.write('8')
                 f.write(' ')
                 for m in range(len(server_reply4)):
-                    # f.write(str(hex(server_reply4[m]))[2:])
-                    f.write(server_reply4[m][2:])
+                    f.write(server_reply4[m][2:])# f.write(str(hex(server_reply4[m]))[2:])
                     f.write(' ')
                 f.write('\n')
 
@@ -254,7 +240,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
 '''-----------------------------------------------------------config_client-----------------------------------------------------------'''
 def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
     my_db = db.MySqlConn()
-    ip_port = ('192.168.10.3', 5555)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8) #  #
+    ip_port = ('192.168.10.3', 5555)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8)
     s = socket.socket()
     s.connect(ip_port)
     if mpc5748cmd_temp["type"] == "LOG_START_REQ":  # record start
@@ -284,6 +270,8 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
         correlation_dic_pid[props.correlation_id] = False
         # s.close()
         # db record file msg
+
+        print("LOG_END_REQ-correlation_dic_file[props.correlation_id]: %s" % correlation_dic_file[props.correlation_id])
         my_db.insert_record(db.file_type_to_table['log'],
                             (correlation_dic_file[props.correlation_id], props.correlation_id,
                              time.strftime("%Y-%m-%d", time.localtime()), '',
@@ -315,7 +303,6 @@ if __name__ == '__main__':
     parameters = pika.ConnectionParameters(host_address, 5672, '/', credentials)
     Mpc5748Cmd_connection = pika.BlockingConnection(parameters)
     Mpc5748Cmd_channel = Mpc5748Cmd_connection.channel()
-
 
     t_client = threading.Thread(target=config_client, name='Config-Thread', args=())
     t_client.start()
