@@ -124,6 +124,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
     last_timestamp = None
     started = None
     send_time2 = 0
+    str_content = ""
 
     t_server = threading.Thread(target=recorder_udp_server_sessions, name='Record-Thread', args=(props, body, mpc5748cmd_temp))
     t_server.start()
@@ -136,9 +137,9 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                 data_list.append(data[i-15:i+1])# data_list = data.split('\n')
             else:
                 pass
-
+        print("Test-1: %s" % data_list)
         for j in range(len(data_list)):
-            data_analysis = struct.unpack('BBBBBBHBBBBBBBB', data_list[j])
+            data_analysis = struct.unpack('!BBBBBBBBBBBBBBBB', data_list[j])
             for k in data_analysis:
                 data_analysis_list.append(hex(k))
 
@@ -147,21 +148,23 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             id3 = int(data_analysis[2]<<8)
             id4 = int(data_analysis[3])
             id = hex(id1|id2|id3|id4)
-            ch_dlc = hex(data_analysis[4])  # 1Byte
+            ch_dlc = hex(data_analysis[4])
             ch = int(data_analysis[4])>>4
             dlc = int(data_analysis[4])&0xF
-            ts1 = int(data_analysis[5]<<16)  # 1Byte
-            ts2 = int(data_analysis[6])  # 2Byte
-            ts = int(ts1) + int(ts2)
+            ts1 = int(data_analysis[5]<<16)
+            ts2 = int(data_analysis[6]<<8)
+            ts3 = int(data_analysis[7])
+            ts = int(ts1) + int(ts2) + int(ts3)
 
-            server_reply4 = data_analysis_list[7:15]
+            server_reply4 = data_analysis_list[8:16]
             for l in range(len(server_reply4)):
                 server_list.append(server_reply4[l][2:])
-            mpc5748cmd_temp["content"] =  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
+            str_content +=  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
+
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
                 send_time2 = int(round(time.time() * 1000))
-                mpc5748cmd_temp["content"] = mpc5748cmd_temp["content"][:-1]
+                mpc5748cmd_temp["content"] = str_content[:-1]
                 response = json.dumps(mpc5748cmd_temp)
                 Send_UI_channel2.basic_publish(exchange='',
                                                routing_key=props.reply_to,
