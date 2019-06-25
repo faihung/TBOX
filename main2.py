@@ -137,7 +137,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
                 data_list.append(data[i-15:i+1])# data_list = data.split('\n')
             else:
                 pass
-        print("Test-1: %s" % data_list)
+
         for j in range(len(data_list)):
             data_analysis = struct.unpack('!BBBBBBBBBBBBBBBB', data_list[j])
             for k in data_analysis:
@@ -159,7 +159,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             server_reply4 = data_analysis_list[8:16]
             for l in range(len(server_reply4)):
                 server_list.append(server_reply4[l][2:])
-            str_content +=  "ID:"+id +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
+            str_content +=  "ID:"+id[2:] +" "+ "CH:"+str(ch) +" "+ "DLC:"+str(dlc) +" "+ "TS:"+str(ts) +" "+ " ".join(server_list).replace('\'', "") + '\n'
 
             server_list.clear()
             if int(round(time.time() * 1000)) > send_time2 + 300:
@@ -195,7 +195,7 @@ def recorder_udp_server(props, body, mpc5748cmd_temp):
             else:
                 timestamp = time.time()
                 timestamp -= started
-                str1 = str(ts)+ ' '+ str(ch)+ ' '+str(id)+ '             '+ 'Rx'+'   '+'d'+' '+str(dlc)+ ' '
+                str1 = str(ts)+ ' '+ str(ch)+ ' '+str(id)[2:]+ '             '+ 'Rx'+'   '+'d'+' '+str(dlc)+ ' '
                 f.write(str1)
                 for m in range(len(server_reply4)):
                     f.write(server_reply4[m][2:])
@@ -216,8 +216,17 @@ def mpc5748_process(Mpc5748Cmd_channel, props, body, mpc5748cmd_temp):
     ip_port = ('192.168.10.3', 5555)#ip_port = ('127.0.0.1', 6666)#ip_port = ('192.168.0.200', 8)
     s = socket.socket()
     s.connect(ip_port)
+    inp_str = "On;"
     if mpc5748cmd_temp["type"] == "LOG_START_REQ":  # record start
+        if len(mpc5748cmd_temp["channel"] ) == len(mpc5748cmd_temp["filters"]):      #mpc5748cmd_temp["filters"] = ["", "", ""]
+            for i, j in zip(mpc5748cmd_temp["channel"], mpc5748cmd_temp["filters"]):#mpc5748cmd_temp["channel"] = ["vcan0", "vcan1", "vcan3"]
+                inp_str += str(i)
+                inp_str += '.'
+                inp_str += str(j)
+                inp_str += ';'
         inp = "On,12345678,Add".encode()
+        # inp = inp_str.encode()
+        print("Tset: %s" % inp)
         print("1")
         s.sendall(inp)
         print("1")
